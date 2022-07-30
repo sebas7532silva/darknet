@@ -128,8 +128,12 @@ def inference(darknet_image_queue, detections_queue, fps_queue):
         detections_queue.put(detections)
         fps = int(1/(time.time() - prev_time))
         fps_queue.put(fps)
-        print("FPS: {}".format(fps))
-        darknet.print_detections(detections, args.ext_output)
+        #print("FPS: {}".format(fps))
+        labels = ['cup', 'cell phone', 'bottle', 'bowl']
+        #darknet.print_detections(detections, args.ext_output)
+        for label, confidence, bbox in detections:
+          if label in labels and confidence >= 45:
+            print(label + ': ' + confidence)
         darknet.free_image(darknet_image)
     cap.release()
 
